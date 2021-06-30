@@ -1,0 +1,7 @@
+Note: To interoperate with OpenCV, OpenCV 3.x to 4.1 are preferred. OpenCV 2.x currently works but interoperability support may be deprecated in the future.
+
+Note: If you plan to use TensorFlow calculators and example apps, there is a known issue with gcc and g++ version 6.3 and 7.3. Please use other versions.
+
+Note: To make Mediapipe work with TensorFlow, please set Python 3.7 as the default Python version and install the Python “six” library by running pip3 install --user six.
+
+https://google.github.io/mediapipe/getting_started/install.html#installing-on-windows

@@ -1,0 +1,7 @@
+https://www.python.org/downloads/windows/
+
+https://www.python.org/downloads/release/python-3711/
+
+https://docs.python.org/3.7/download.html
+
+https://www.ics.uci.edu/~pattis/common/handouts/pythoneclipsejava/python.html
