@@ -8,7 +8,7 @@ from Util import BasicToolModule
 
 # Start of Setting
 ##################
-wCam, hCam = 1080, 720  # width and height image
+wCam, hCam = 480, 360  # width and height image
 noCam = 0
 globalColor = (255, 0, 0)
 ##################
@@ -19,7 +19,7 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 
 basicTools = BasicToolModule.BasicTools()
-detector = HandTrackingModule.HandDetector(detectionCon=0.7, maxHands=2)
+detector = HandTrackingModule.HandDetector(detectionCon=0.65, maxHands=2)
 
 while True:
     success, img = cap.read()

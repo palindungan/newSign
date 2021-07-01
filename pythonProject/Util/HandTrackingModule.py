@@ -45,34 +45,41 @@ class HandDetector():
 
         # detect if there is hand or not
         if self.results.multi_hand_landmarks:
-            myHand = self.results.multi_hand_landmarks[handNo]
 
-            # detect index ,position (ratio) landmark  in image
-            for id, lm in enumerate(myHand.landmark):
-                # print(id, lm)
-                h, w, c = img.shape
-                cx, cy = int(lm.x * w), int(lm.y * h)
+            # draw multiple hand
+            for myHand in self.results.multi_hand_landmarks:
 
-                # get all x, y position
-                xList.append(cx)
-                yList.append(cy)
+                xList = []
+                yList = []
+                bbox = []
 
-                # print(id, cx, cy)
-                self.lmList.append([id, cx, cy])
-                # if id == 0:
-                #     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
+                # detect index ,position (ratio) landmark  in image
+                for id, lm in enumerate(myHand.landmark):
+
+                    # print(id, lm)
+                    h, w, c = img.shape
+                    cx, cy = int(lm.x * w), int(lm.y * h)
+
+                    # get all x, y position
+                    xList.append(cx)
+                    yList.append(cy)
+
+                    # print(id, cx, cy)
+                    self.lmList.append([id, cx, cy])
+                    # if id == 0:
+                    #     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
+
+                    if draw:
+                        cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
+
+                # finc min and max each x y
+                xMin, xMax = min(xList), max(xList)
+                yMin, yMax = min(yList), max(yList)
+
+                bbox = xMin, yMin, xMax, yMax
 
                 if draw:
-                    cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
-
-            # finc min and max each x y
-            xMin, xMax = min(xList), max(xList)
-            yMin, yMax = min(yList), max(yList)
-
-            bbox = xMin, yMin, xMax, yMax
-
-            if draw:
-                cv2.rectangle(img, (bbox[0] - 20, bbox[1] - 20), (bbox[2] + 20, bbox[3] + 20), (0, 255, 0), 2)
+                    cv2.rectangle(img, (bbox[0] - 20, bbox[1] - 20), (bbox[2] + 20, bbox[3] + 20), (0, 255, 0), 2)
 
         return self.lmList, bbox
 
