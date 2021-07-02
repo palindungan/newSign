@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import time
 import math
+import numpy as np
 
 
 class HandDetector():
@@ -18,6 +19,10 @@ class HandDetector():
         self.tipIds = [4, 8, 12, 16, 20]
 
     def findHands(self, img, draw=True):
+        width = img.shape[1]
+        height = img.shape[0]
+        imgCanvas = np.zeros((width, height, 3), np.uint8)
+
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # convert BGR -> RGB
 
         self.results = self.hands.process(imgRGB)  # preform the hand detection
@@ -31,8 +36,9 @@ class HandDetector():
                 if draw:
                     # drawing connection landmark
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
+                    self.mpDraw.draw_landmarks(imgCanvas, handLms, self.mpHands.HAND_CONNECTIONS)
 
-        return img
+        return img, imgCanvas
 
     def findPosition(self, img, handNo=0, draw=True):
 

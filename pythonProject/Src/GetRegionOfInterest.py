@@ -21,16 +21,19 @@ cap.set(4, hCam)
 basicTools = BasicToolModule.BasicTools()
 detector = HandTrackingModule.HandDetector(detectionCon=0.65, maxHands=2)
 
+imgCanvas = np.zeros((480, 360, 3), np.uint8)
+
 while True:
     success, img = cap.read()
 
-    img = detector.findHands(img)
+    img, imgCanvas = detector.findHands(img)
     lmList, bbox = detector.findPosition(img, draw=True)
 
     fps = basicTools.countFps(time=time.time())
 
     cv2.putText(img, f'FPS {int(fps)}', (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
-    cv2.imshow('Original Image', img)
+    stackedImages = basicTools.stackImages(1, ([img, imgCanvas]))
+    cv2.imshow("Stacked Image", stackedImages)
 
     if cv2.waitKey(1) & 0xff == ord('q'):
         break
