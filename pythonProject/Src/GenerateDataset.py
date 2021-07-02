@@ -54,7 +54,7 @@ while True:
 
     # detect hand
     img = detector.findHands(img)
-    lmList, bboxList, bboxAll, imgCanvas = detector.findPosition(img, draw=True)
+    lmList, bboxList, imgCanvas = detector.findPosition(img, draw=True)
 
     # show fps
     fps = basicTools.countFps(time=time.time())
