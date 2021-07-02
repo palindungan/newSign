@@ -53,7 +53,7 @@ while True:
     imgCopy = img.copy()
 
     # detect hand
-    img, imgCanvas, handLmsList = detector.findHands(img)
+    img = detector.findHands(img)
     lmList, bboxList = detector.findPosition(img, draw=True)
 
     # show fps
@@ -61,7 +61,7 @@ while True:
     cv2.putText(img, f'FPS {int(fps)}', (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
 
     # show result in stacked images
-    stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas]))
+    stackedImages = imageProcessing.stackImages(1, ([img]))
     cv2.imshow("Stacked Image", stackedImages)
 
     if cv2.waitKey(1) & 0xff == ord('q'):
