@@ -8,20 +8,39 @@ from Util import ImageProcessingModule
 # Start of Setting
 ##################
 wCam, hCam = 480, 360  # width and height image
-noCam = 0
-globalColor = (255, 0, 0)
+noCam = 0  # default Cam
+globalColor = (255, 0, 0)  # default color
+detectionCon = 0.70  # set Confident in AI Mediapipe
+
+cameraBrightness = 190  # Set Brightness
+moduleVal = 10  # SAVE EVERY 1 FRAME TO AVOID REPETITION
+minBlur = 500  # SMALLER VALUE MEANS MORE BLURRINESS PRESENT
+grayImage = False  # IMAGE SAVED COLORED OR GRAY
+saveData = True  # SAVE DATA FLAG
+showImage = True  # IMAGE DISPLAY FLAG
+imgWidth = 180  # Resize width Image
+imgHeight = 120  # Resize height Image
 ##################
 # End of Setting
 
+# Start of Declare Object Class
+basicTools = BasicToolModule.BasicTools()
+imageProcessing = ImageProcessingModule.ImageProcessing()
+detector = HandTrackingModule.HandDetector(detectionCon=detectionCon, maxHands=2)
+# End of Declare Object Class
+
+# Start of Set
 cap = cv2.VideoCapture(noCam)
 cap.set(3, wCam)
 cap.set(4, hCam)
+cap.set(10, cameraBrightness)
 
-basicTools = BasicToolModule.BasicTools()
-imageProcessing = ImageProcessingModule.ImageProcessing()
-detector = HandTrackingModule.HandDetector(detectionCon=0.65, maxHands=2)
+myPath = basicTools.getBaseUrl() + '/Resources/dataset/images'  # PATH TO SAVE IMAGE
 
-imgCanvas = np.zeros((480, 360, 3), np.uint8)
+global countFolder
+count = 0
+countSave = 0
+# End of Set
 
 while True:
     success, img = cap.read()
@@ -29,7 +48,7 @@ while True:
     img, imgCanvas = detector.findHands(img)
     lmList, bboxList = detector.findPosition(img, draw=True)
 
-    # print(bboxList)
+    # print(bboxList[0][0])
 
     fps = basicTools.countFps(time=time.time())
 
