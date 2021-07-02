@@ -1,8 +1,6 @@
 import cv2
-import os
 import time
 import numpy as np
-import math
 from Util import HandTrackingModule
 from Util import BasicToolModule
 from Util import ImageProcessingModule
