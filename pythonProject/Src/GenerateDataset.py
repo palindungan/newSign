@@ -1,6 +1,7 @@
 import cv2
 import time
 import numpy as np
+import os
 from Util import HandTrackingModule
 from Util import BasicToolModule
 from Util import ImageProcessingModule
@@ -35,24 +36,31 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
-myPath = basicTools.getBaseUrl() + '/Resources/dataset/images'  # PATH TO SAVE IMAGE
+myPath = basicTools.getBaseUrl() + '/Resources/dataset/'  # PATH TO SAVE IMAGE
 
-global countFolder
 count = 0
 countSave = 0
 # End of Set
 
+# # make folder
+# if saveData:
+#     basicTools.CreateDirectory(myPath)
+
 while True:
+    # read image from cam
     success, img = cap.read()
 
+    # detect hand
     img, imgCanvas = detector.findHands(img)
     lmList, bboxList = detector.findPosition(img, draw=True)
 
     # print(bboxList[0][0])
 
+    # show fps
     fps = basicTools.countFps(time=time.time())
-
     cv2.putText(img, f'FPS {int(fps)}', (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
+
+    # show result in stacked images
     stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas]))
     cv2.imshow("Stacked Image", stackedImages)
 
