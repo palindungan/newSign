@@ -130,3 +130,17 @@ class HandDetector():
     def drawHandLandmarks(self, img, handLms):
         self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
         return img
+
+    def getImgLandmark(self, img, handLmsList):
+        imgLandmarkLeft = self.basicTools.CreateBlankImage(img)
+        imgLandmarkRight = self.basicTools.CreateBlankImage(img)
+
+        for idx, handLms in enumerate(handLmsList):
+            if idx == 0:
+                imgLandmarkLeft = self.drawHandLandmarks(self.basicTools.CreateBlankImage(img), handLms)
+            if idx == 1:
+                imgLandmarkRight = self.drawHandLandmarks(self.basicTools.CreateBlankImage(img), handLms)
+
+        imgLandmarkList = [imgLandmarkLeft, imgLandmarkRight]
+
+        return imgLandmarkList
