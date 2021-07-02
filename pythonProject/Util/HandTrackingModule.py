@@ -43,11 +43,9 @@ class HandDetector():
         return img, imgCanvas
 
     def findPosition(self, img, handNo=0, draw=True):
-
-        bboxList = []
-
         # declaration
         self.lmList = []
+        bboxList = []
 
         # detect if there is hand or not
         if self.results.multi_hand_landmarks:
@@ -57,6 +55,9 @@ class HandDetector():
 
                 xList = []
                 yList = []
+
+                # detect left right hand
+                leftRightHand = self.detectLeftRightHand(idMyHand)
 
                 # detect index ,position (ratio) landmark  in image
                 for idLandmark, lm in enumerate(myHand.landmark):
@@ -70,14 +71,14 @@ class HandDetector():
                     yList.append(cy)
 
                     # print(idLandmark, cx, cy)
-                    self.lmList.append([idMyHand, idLandmark, cx, cy])
+                    self.lmList.append([idMyHand, idLandmark, cx, cy, leftRightHand])
                     # if idLandmark == 0:
                     #     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
 
                     if draw:
                         cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
 
-                # finc min and max each x y
+                # find min and max each x y
                 xMin, xMax = min(xList), max(xList)
                 yMin, yMax = min(yList), max(yList)
 
@@ -103,3 +104,17 @@ class HandDetector():
         length = math.hypot(x2 - x1, y2 - y1)
 
         return length, img, [x1, y1, x2, y2, cx, cy]
+
+    def detectLeftRightHand(self, idMyHand):
+        output = None
+        for idx, classification in enumerate(self.results.multi_handedness):
+            if classification.classification[0].index == idMyHand:
+                # process result
+                index = classification.classification[0].index  # 0 = left, 1 right
+                label = classification.classification[0].label  # left, right
+                score = classification.classification[0].score  # confident
+                text = '{} {}'.format(label, round(score, 2))
+
+                output = label
+
+        return output

@@ -57,7 +57,7 @@ while True:
     lmList, bboxList = detector.findPosition(img, draw=True)
 
     # print(bboxList[0][0])
-    print(lmList)
+    # print(lmList)
 
     # show fps
     fps = basicTools.countFps(time=time.time())
