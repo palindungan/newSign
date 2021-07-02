@@ -27,9 +27,9 @@ while True:
     success, img = cap.read()
 
     img, imgCanvas = detector.findHands(img)
-    lmList, bbox = detector.findPosition(img, draw=True)
+    lmList, bboxList = detector.findPosition(img, draw=True)
 
-    print(lmList)
+    print(bboxList)
 
     fps = basicTools.countFps(time=time.time())
 
