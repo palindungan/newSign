@@ -25,6 +25,8 @@ class HandDetector():
         # init
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # convert BGR -> RGB
 
+        imgCanvas = self.basicTools.CreateBlankImage(img)
+
         self.results = self.hands.process(imgRGB)  # preform the hand detection
 
         # detect if there is hand or not
@@ -37,8 +39,9 @@ class HandDetector():
                 if draw:
                     # drawing connection landmark
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
+                    self.mpDraw.draw_landmarks(imgCanvas, handLms, self.mpHands.HAND_CONNECTIONS)
 
-        return img
+        return img, imgCanvas
 
     def findPosition(self, img, handNo=0, draw=True):
         # declaration
