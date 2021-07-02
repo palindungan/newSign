@@ -18,6 +18,7 @@ class HandDetector():
         self.tipIds = [4, 8, 12, 16, 20]
 
     def findHands(self, img, draw=True):
+        # create black image
         width = img.shape[1]
         height = img.shape[0]
         imgCanvas = np.zeros((width, height, 3), np.uint8)
@@ -29,8 +30,10 @@ class HandDetector():
 
         # detect if there is hand or not
         if self.results.multi_hand_landmarks:
+
             # detect multiple hands
             for handLms in self.results.multi_hand_landmarks:
+
                 # check if want to draw
                 if draw:
                     # drawing connection landmark
@@ -41,9 +44,6 @@ class HandDetector():
 
     def findPosition(self, img, handNo=0, draw=True):
 
-        xList = []
-        yList = []
-        bbox = []
         bboxList = []
 
         # declaration
@@ -57,22 +57,21 @@ class HandDetector():
 
                 xList = []
                 yList = []
-                bbox = []
 
                 # detect index ,position (ratio) landmark  in image
-                for id, lm in enumerate(myHand.landmark):
+                for idLandmark, lm in enumerate(myHand.landmark):
 
-                    # print(id, lm)
-                    h, w, c = img.shape
-                    cx, cy = int(lm.x * w), int(lm.y * h)
+                    # print(idLandmark, lm)
+                    h, w, c = img.shape  # get image shape
+                    cx, cy = int(lm.x * w), int(lm.y * h)  # get coordinate
 
                     # get all x, y position
                     xList.append(cx)
                     yList.append(cy)
 
-                    # print(id, cx, cy)
-                    self.lmList.append([idMyHand, id, cx, cy])
-                    # if id == 0:
+                    # print(idLandmark, cx, cy)
+                    self.lmList.append([idMyHand, idLandmark, cx, cy])
+                    # if idLandmark == 0:
                     #     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
 
                     if draw:
@@ -90,29 +89,9 @@ class HandDetector():
 
         return self.lmList, bboxList
 
-    def fingersUp(self):
-        fingers = []
-
-        # thumb
-        if self.lmList[self.tipIds[0]][1] > self.lmList[self.tipIds[0] - 1][1]:
-            # print('Index Finger Open')
-            fingers.append(1)
-        else:
-            fingers.append(0)
-
-        # 4 other fingers
-        for id in range(1, 5):
-            if self.lmList[self.tipIds[id]][2] < self.lmList[self.tipIds[id] - 2][2]:
-                # print('Index Finger Open')
-                fingers.append(1)
-            else:
-                fingers.append(0)
-
-        return fingers
-
-    def findDistance(self, p1, p2, img, draw=True):
-        x1, y1 = self.lmList[p1][1], self.lmList[p1][2]
-        x2, y2 = self.lmList[p2][1], self.lmList[p2][2]
+    def findDistance(self, idMyHand, p1, p2, img, draw=True):
+        x1, y1 = self.lmList[idMyHand][p1][1], self.lmList[idMyHand][p1][2]
+        x2, y2 = self.lmList[idMyHand][p2][1], self.lmList[idMyHand][p2][2]
         cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
 
         if draw:
