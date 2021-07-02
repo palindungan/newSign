@@ -29,6 +29,8 @@ while True:
     img, imgCanvas = detector.findHands(img)
     lmList, bbox = detector.findPosition(img, draw=True)
 
+    print(lmList)
+
     fps = basicTools.countFps(time=time.time())
 
     cv2.putText(img, f'FPS {int(fps)}', (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)

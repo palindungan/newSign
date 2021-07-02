@@ -51,9 +51,8 @@ class HandDetector():
 
         # detect if there is hand or not
         if self.results.multi_hand_landmarks:
-
             # draw multiple hand
-            for myHand in self.results.multi_hand_landmarks:
+            for idMyHand, myHand in enumerate(self.results.multi_hand_landmarks):
 
                 xList = []
                 yList = []
@@ -71,7 +70,7 @@ class HandDetector():
                     yList.append(cy)
 
                     # print(id, cx, cy)
-                    self.lmList.append([id, cx, cy])
+                    self.lmList.append([idMyHand, id, cx, cy])
                     # if id == 0:
                     #     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
 
