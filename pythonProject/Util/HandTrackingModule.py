@@ -1,7 +1,6 @@
 import cv2
 import mediapipe as mp
 import math
-import numpy as np
 from Util import BasicToolModule
 
 
@@ -46,6 +45,12 @@ class HandDetector():
         self.lmList = []
         bboxList = []
 
+        imgCanvas = self.basicTools.CreateBlankImage(img)
+
+        xListAll = []
+        yListAll = []
+        bboxAll = []
+
         # detect if there is hand or not
         if self.results.multi_hand_landmarks:
 
@@ -64,6 +69,8 @@ class HandDetector():
                     # get all x, y position
                     xList.append(cx)
                     yList.append(cy)
+                    xListAll.append(cx)
+                    yListAll.append(cy)
 
                     # add lanmark list object
                     self.lmList.append([idxHandLms, idxLandmark, cx, cy])
@@ -79,14 +86,20 @@ class HandDetector():
                 # find min and max each x y
                 xMin, xMax = min(xList), max(xList)
                 yMin, yMax = min(yList), max(yList)
-
                 bbox = xMin, yMin, xMax, yMax
                 bboxList.append(bbox)
 
                 if draw:
                     cv2.rectangle(img, (bbox[0] - 20, bbox[1] - 20), (bbox[2] + 20, bbox[3] + 20), (0, 255, 0), 2)
 
-        return self.lmList, bboxList
+                imgCanvas = self.drawHandLandmarks(imgCanvas, handLms)
+
+            # find min and max each x y
+            xMinAll, xMaxAll = min(xListAll), max(xListAll)
+            yMinAll, yMaxAll = min(yListAll), max(yListAll)
+            bboxAll = xMinAll, yMinAll, xMaxAll, yMaxAll
+
+        return self.lmList, bboxList, bboxAll, imgCanvas
 
     def drawHandLandmarks(self, img, handLms):
         self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
