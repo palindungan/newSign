@@ -53,18 +53,24 @@ while True:
     imgCopy = img.copy()
 
     # detect hand
-    img, imgCanvas = detector.findHands(img)
+    img, imgCanvas, handLmsList = detector.findHands(img)
     lmList, bboxList = detector.findPosition(img, draw=True)
 
-    # print(bboxList[0][0])
-    # print(lmList)
+    imgLandmarkLeft = basicTools.CreateBlankImage(img)
+    imgLandmarkRight = basicTools.CreateBlankImage(img)
+
+    for idx, handLms in enumerate(handLmsList):
+        if idx == 0:
+            imgLandmarkLeft = detector.drawHandLandmarks(basicTools.CreateBlankImage(img), handLms)
+        if idx == 1:
+            imgLandmarkRight = detector.drawHandLandmarks(basicTools.CreateBlankImage(img), handLms)
 
     # show fps
     fps = basicTools.countFps(time=time.time())
     cv2.putText(img, f'FPS {int(fps)}', (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
 
     # show result in stacked images
-    stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas]))
+    stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas], [imgLandmarkLeft, imgLandmarkRight]))
     cv2.imshow("Stacked Image", stackedImages)
 
     if cv2.waitKey(1) & 0xff == ord('q'):

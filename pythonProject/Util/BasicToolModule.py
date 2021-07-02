@@ -1,5 +1,6 @@
 import sys
 import os
+import numpy as np
 
 
 class BasicTools():
@@ -27,3 +28,8 @@ class BasicTools():
             self.countFolder = self.countFolder + 1
 
         os.makedirs(myPath + str(self.countFolder))
+
+    def CreateBlankImage(self, img):
+        width = img.shape[1]
+        height = img.shape[0]
+        return np.zeros((width, height, 3), np.uint8)

@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import math
 import numpy as np
+from Util import BasicToolModule
 
 
 class HandDetector():
@@ -17,11 +18,14 @@ class HandDetector():
         self.mpDraw = mp.solutions.drawing_utils  # module for drawing landmark connection
         self.tipIds = [4, 8, 12, 16, 20]
 
+        self.basicTools = BasicToolModule.BasicTools()
+
     def findHands(self, img, draw=True):
         # create black image
         width = img.shape[1]
         height = img.shape[0]
         imgCanvas = np.zeros((width, height, 3), np.uint8)
+        handLmsList = []
 
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # convert BGR -> RGB
 
@@ -39,8 +43,9 @@ class HandDetector():
                     # drawing connection landmark
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
                     self.mpDraw.draw_landmarks(imgCanvas, handLms, self.mpHands.HAND_CONNECTIONS)
+                    handLmsList.append(handLms)
 
-        return img, imgCanvas
+        return img, imgCanvas, handLmsList
 
     def findPosition(self, img, handNo=0, draw=True):
         # declaration
@@ -121,3 +126,7 @@ class HandDetector():
                 output = label
 
         return output
+
+    def drawHandLandmarks(self, img, handLms):
+        self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
+        return img
