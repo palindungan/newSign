@@ -49,12 +49,15 @@ countSave = 0
 while True:
     # read image from cam
     success, img = cap.read()
+    img = cv2.flip(img, 1)  # flip the image
+    imgCopy = img.copy()
 
     # detect hand
     img, imgCanvas = detector.findHands(img)
     lmList, bboxList = detector.findPosition(img, draw=True)
 
     # print(bboxList[0][0])
+    print(lmList)
 
     # show fps
     fps = basicTools.countFps(time=time.time())
