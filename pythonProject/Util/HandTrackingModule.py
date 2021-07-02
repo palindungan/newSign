@@ -45,8 +45,6 @@ class HandDetector():
         self.lmList = []
         bboxList = []
 
-        imgCanvas = self.basicTools.CreateBlankImage(img)
-
         xListAll = []
         yListAll = []
         bboxAll = []
@@ -92,14 +90,12 @@ class HandDetector():
                 if draw:
                     cv2.rectangle(img, (bbox[0] - 20, bbox[1] - 20), (bbox[2] + 20, bbox[3] + 20), (0, 255, 0), 2)
 
-                imgCanvas = self.drawHandLandmarks(imgCanvas, handLms)
-
             # find min and max each x y
             xMinAll, xMaxAll = min(xListAll), max(xListAll)
             yMinAll, yMaxAll = min(yListAll), max(yListAll)
             bboxAll = xMinAll, yMinAll, xMaxAll, yMaxAll
 
-        return self.lmList, bboxList, bboxAll, imgCanvas
+        return self.lmList, bboxList, bboxAll
 
     def drawHandLandmarks(self, img, handLms):
         self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
