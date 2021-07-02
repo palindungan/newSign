@@ -57,7 +57,7 @@ class HandDetector():
                 yList = []
 
                 # detect left right hand
-                leftRightHand = self.detectLeftRightHand(idMyHand)
+                leftRightClassification = self.detectLeftRightHand(idMyHand)
 
                 # detect index ,position (ratio) landmark  in image
                 for idLandmark, lm in enumerate(myHand.landmark):
@@ -70,13 +70,16 @@ class HandDetector():
                     xList.append(cx)
                     yList.append(cy)
 
-                    # print(idLandmark, cx, cy)
-                    self.lmList.append([idMyHand, idLandmark, cx, cy, leftRightHand])
-                    # if idLandmark == 0:
-                    #     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
+                    # add lanmark list object
+                    self.lmList.append([idMyHand, idLandmark, cx, cy, leftRightClassification])
 
                     if draw:
                         cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
+
+                        # detect wrist
+                        if idLandmark == 0:
+                            cv2.putText(img, leftRightClassification, (cx, cy + 20), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                                        (255, 0, 255), 3)
 
                 # find min and max each x y
                 xMin, xMax = min(xList), max(xList)
@@ -106,12 +109,12 @@ class HandDetector():
         return length, img, [x1, y1, x2, y2, cx, cy]
 
     def detectLeftRightHand(self, idMyHand):
-        output = None
+        output = "None"
         for idx, classification in enumerate(self.results.multi_handedness):
             if classification.classification[0].index == idMyHand:
                 # process result
                 index = classification.classification[0].index  # 0 = left, 1 right
-                label = classification.classification[0].label  # left, right
+                label = classification.classification[0].label  # Left, Right
                 score = classification.classification[0].score  # confident
                 text = '{} {}'.format(label, round(score, 2))
 
