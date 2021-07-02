@@ -51,6 +51,7 @@ class HandDetector():
 
         # detect if there is hand or not
         if self.results.multi_hand_landmarks:
+
             # draw multiple hand
             for idMyHand, myHand in enumerate(self.results.multi_hand_landmarks):
 
