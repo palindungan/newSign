@@ -14,10 +14,10 @@ globalColor = (255, 0, 0)  # default color
 detectionCon = 0.70  # set Confident in AI Mediapipe
 
 cameraBrightness = 190  # Set Brightness
-moduleVal = 10  # SAVE EVERY 1 FRAME TO AVOID REPETITION
+moduleVal = 5  # SAVE EVERY 1 FRAME TO AVOID REPETITION
 minBlur = 500  # SMALLER VALUE MEANS MORE BLURRINESS PRESENT
 grayImage = False  # IMAGE SAVED COLORED OR GRAY
-saveData = True  # SAVE DATA FLAG
+saveData = False  # SAVE DATA FLAG
 showImage = True  # IMAGE DISPLAY FLAG
 imgWidth = 180  # Resize width Image
 imgHeight = 120  # Resize height Image
@@ -39,7 +39,7 @@ cap.set(10, cameraBrightness)
 myPath = basicTools.getBaseUrl() + '/Resources/dataset/'  # PATH TO SAVE IMAGE
 # End of Set
 
-# make folder
+# create folder for new dataset
 if saveData:
     basicTools.CreateDirectory(myPath)
 
@@ -53,17 +53,22 @@ while True:
     img, imgCanvas = detector.findHands(img)
     lmList, bboxList, bboxAll = detector.findPosition(img, draw=True)
 
-    # show fps
-    fps = basicTools.countFps(time=time.time())
-    cv2.putText(img, f'FPS {int(fps)}', (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
-
+    # Get ROI
     imgRoi = basicTools.CreateBlankImage(img)
     if len(bboxAll) > 0:
         # crop image in matrix y,x
         imgRoi = imgCanvas[abs(bboxAll[1] - 20): abs(bboxAll[3] + 20),
                  abs(bboxAll[0] - 20):abs(bboxAll[2] + 20)]
 
+        # save ROI
+        if saveData:
+            basicTools.saveImageRoi(imgRoi, moduleVal, minBlur, myPath)
+
     imgRoi = cv2.resize(imgRoi, (wCam, hCam))  # resize img region of interest
+
+    # show fps
+    fps = basicTools.countFps(time=time.time())
+    cv2.putText(img, f'FPS {int(fps)}', (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
 
     # show result in stacked images
     stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas], [imgRoi, basicTools.CreateBlankImage(img)]))
