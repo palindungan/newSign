@@ -181,7 +181,7 @@ class TrainingClass():
         print('1 Create the Model and Training ........')
 
         batchSizeVal = 50
-        epochsVal = 154
+        epochsVal = 20
         stepsPerEpochVal = len(X_train) // batchSizeVal
 
         model = self.myModel(imageDimensions, noOfClasses)
@@ -248,7 +248,7 @@ def main():
     # Start of SETTING
     testRatio = 0.2
     valRatio = 0.2
-    imageDimensions = (32, 32, 3)
+    imageDimensions = (90, 60, 3)
     # End of SETTING
     ##########################
 
