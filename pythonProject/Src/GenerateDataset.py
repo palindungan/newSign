@@ -60,16 +60,19 @@ while True:
     fps = basicTools.countFps(time=time.time())
     cv2.putText(img, f'FPS {int(fps)}', (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
 
-    # show result in stacked images
-    stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas]))
-    cv2.imshow("Stacked Image", stackedImages)
-
+    imgRoi = basicTools.CreateBlankImage(img)
     if len(bboxAll) > 0:
         # crop image in matrix y,x
-        imgCanvas = imgCanvas[abs(bboxAll[1] - 20): abs(bboxAll[3] + 20),
-                    abs(bboxAll[0] - 20):abs(bboxAll[2] + 20)]
+        imgRoi = imgCanvas[abs(bboxAll[1] - 20): abs(bboxAll[3] + 20),
+                 abs(bboxAll[0] - 20):abs(bboxAll[2] + 20)]
 
-    cv2.imshow("imgCopy", imgCanvas)
+    cv2.imshow("imgRoi", imgRoi)
+
+    imgRoi = cv2.resize(imgRoi, (wCam, hCam))
+
+    # show result in stacked images
+    stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas], [imgRoi, basicTools.CreateBlankImage(img)]))
+    cv2.imshow("Stacked Image", stackedImages)
 
     if cv2.waitKey(1) & 0xff == ord('q'):
         break
