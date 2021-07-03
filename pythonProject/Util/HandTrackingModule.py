@@ -39,7 +39,11 @@ class HandDetector():
                 if draw:
                     # drawing connection landmark
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
-                    self.mpDraw.draw_landmarks(imgCanvas, handLms, self.mpHands.HAND_CONNECTIONS)
+                    self.mpDraw.draw_landmarks(imgCanvas, handLms, self.mpHands.HAND_CONNECTIONS,
+                                               self.mpDraw.DrawingSpec(color=(255, 255, 255), thickness=3,
+                                                                       circle_radius=3),
+                                               self.mpDraw.DrawingSpec(color=(0, 255, 0), thickness=2)
+                                               )
 
         return img, imgCanvas
 
@@ -77,12 +81,12 @@ class HandDetector():
                     self.lmList.append([idxHandLms, idxLandmark, cx, cy])
 
                     if draw:
-                        cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
+                        cv2.circle(img, (cx, cy), 5, (255, 255, 255), cv2.FILLED)
 
                         # detect wrist
                         if idxLandmark == 0:
                             cv2.putText(img, str(idxHandLms), (cx, cy + 20), cv2.FONT_HERSHEY_SIMPLEX, 1,
-                                        (255, 0, 255), 3)
+                                        (0, 255, 0), 3)
 
                 # find min and max each x y
                 xMin, xMax = min(xList), max(xList)
@@ -110,10 +114,10 @@ class HandDetector():
         cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
 
         if draw:
-            cv2.circle(img, (x1, y1), 15, (255, 0, 0), cv2.FILLED)
-            cv2.circle(img, (x2, y2), 15, (255, 0, 0), cv2.FILLED)
-            cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 3)
-            cv2.circle(img, (cx, cy), 15, (255, 0, 0), cv2.FILLED)
+            cv2.circle(img, (x1, y1), 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, (x2, y2), 15, (0, 255, 0), cv2.FILLED)
+            cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 3)
+            cv2.circle(img, (cx, cy), 15, (0, 255, 0), cv2.FILLED)
 
         length = math.hypot(x2 - x1, y2 - y1)
 
