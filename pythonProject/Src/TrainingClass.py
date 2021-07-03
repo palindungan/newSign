@@ -12,7 +12,6 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.optimizers import Adam
 from keras.layers.convolutional import Conv2D, MaxPooling2D
 
-from Util import HandTrackingModule
 from Util import BasicToolModule
 from Util import ImageProcessingModule
 
@@ -20,6 +19,7 @@ from Util import ImageProcessingModule
 class TrainingClass():
     def __init__(self):
         self.imageProcessing = ImageProcessingModule.ImageProcessing()
+        self.basicTools = BasicToolModule.BasicTools()
 
     def getDatasetArray(self, path, imageDimensions):
         images = []  # contain all images
@@ -141,24 +141,120 @@ class TrainingClass():
 
         print('after reshape = ' + str(X_train.shape))
 
+        return X_train, y_train, X_test, y_test, X_validation, y_validation
+
+    def imageAugmentation(self, X_train):
+        print(' ')
+        print('1 Image Augmentation ........')
+        # preparation for generate data
+        # defines the configuration for image data preparation and augmentation
+        dataGen = ImageDataGenerator(width_shift_range=0.1,
+                                     height_shift_range=0.1,
+                                     zoom_range=0.2,
+                                     shear_range=0.1,
+                                     rotation_range=10)
+
+        # This will calculate any statistics required to actually perform the transforms to your image data.
+        # help generator to calculate some statistic before perform transformation
+        dataGen.fit(X_train)
+
+        return dataGen
+
+    def onOneHotEncode(self, noOfClasses, X_train, y_train, X_test, y_test, X_validation, y_validation):
+        print(' ')
+        print('1 One Hot Encode (one_hot_encode) ........')
+        # before hot encode
+        print(y_train[0])
+
+        y_train = to_categorical(y_train, noOfClasses)
+        y_test = to_categorical(y_test, noOfClasses)
+        y_validation = to_categorical(y_validation, noOfClasses)
+
+        # after hot encode
+        print(y_train[0])
+
+        return X_train, y_train, X_test, y_test, X_validation, y_validation
+
+    def createModel(self, imageDimensions, noOfClasses, dataGen, X_train, y_train, X_test, y_test, X_validation,
+                    y_validation):
+        print(' ')
+        print('1 Create the Model and Training ........')
+
+        batchSizeVal = 50
+        epochsVal = 20
+        stepsPerEpochVal = len(X_train) // batchSizeVal
+
+        model = self.myModel(imageDimensions, noOfClasses)
+        print(model.summary())
+
+        history = model.fit(
+            dataGen.flow(X_train, y_train, batch_size=batchSizeVal),
+            steps_per_epoch=stepsPerEpochVal,
+            epochs=epochsVal,
+            validation_data=(X_validation, y_validation),
+            shuffle=1
+        )
+
+        plt.figure(1)
+        plt.plot(history.history['loss'])
+        plt.plot(history.history['val_loss'])
+        plt.legend(['training', ' validation'])
+        plt.title('Loss')
+        plt.xlabel('epoch')
+
+        plt.figure(2)
+        plt.plot(history.history['accuracy'])
+        plt.plot(history.history['val_accuracy'])
+        plt.legend(['training', ' validation'])
+        plt.title('Accuracy')
+        plt.xlabel('epoch')
+
+        plt.show()
+
+        score = model.evaluate(X_test, y_test, verbose=0)
+        print('Test Score = ', str(score[0]))
+        print('Test Accuracy = ', str(score[1]))
+
+        model.save(self.basicTools.getBaseUrl() + '/Resources/dataset/')
+
+    def myModel(self, imageDimensions, noOfClasses):
+        noOfFilters = 60
+        sizeOfFilter1 = (5, 5)
+        sizeOfFilter2 = (3, 3)
+        sizeOfPool = (2, 2)
+        noOfNode = 500
+
+        model = Sequential()
+        model.add((Conv2D(noOfFilters, sizeOfFilter1, input_shape=(imageDimensions[0], imageDimensions[1], 1),
+                          activation='relu')))
+        model.add((Conv2D(noOfFilters, sizeOfFilter1, activation='relu')))
+        model.add(MaxPooling2D(pool_size=sizeOfPool))
+        model.add((Conv2D(noOfFilters // 2, sizeOfFilter2, activation='relu')))
+        model.add((Conv2D(noOfFilters // 2, sizeOfFilter2, activation='relu')))
+        model.add(MaxPooling2D(pool_size=sizeOfPool))
+        model.add(Dropout(0.5))
+
+        model.add(Flatten())
+        model.add(Dense(noOfNode, activation='relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(noOfClasses, activation='softmax'))
+        model.compile(Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
+
+        return model
+
 
 def main():
     ##########################
     # Start of SETTING
-    pathLabels = ''
     testRatio = 0.2
     valRatio = 0.2
     imageDimensions = (32, 32, 3)
-    batchSizeVal = 50
-    epochsVal = 1
-    stepsPerEpochVal = 2000
     # End of SETTING
     ##########################
 
     # Start of Declare Object Class
     trainingClass = TrainingClass()
     basicTools = BasicToolModule.BasicTools()
-    imageProcessing = ImageProcessingModule.ImageProcessing()
     # End of Declare Object Class
 
     # Start of Set
@@ -181,7 +277,33 @@ def main():
     # preprocessing and reshaping the data
     # start
     ##########################
-    trainingClass.preprocessingImage(noOfClasses, X_train, y_train, X_test, y_test, X_validation, y_validation)
+    X_train, y_train, X_test, y_test, X_validation, y_validation = trainingClass.preprocessingImage(noOfClasses,
+                                                                                                    X_train, y_train,
+                                                                                                    X_test, y_test,
+                                                                                                    X_validation,
+                                                                                                    y_validation)
+
+    ##########################
+    # image augmentation
+    # start
+    ##########################
+    dataGen = trainingClass.imageAugmentation(X_train)
+
+    ##########################
+    # One Hot Encode (one_hot_encode)
+    # start
+    ##########################
+    X_train, y_train, X_test, y_test, X_validation, y_validation = trainingClass.onOneHotEncode(noOfClasses, X_train,
+                                                                                                y_train, X_test, y_test,
+                                                                                                X_validation,
+                                                                                                y_validation)
+
+    ##########################
+    # Create the Model and Training
+    # start
+    ##########################
+    trainingClass.createModel(imageDimensions, noOfClasses, dataGen, X_train, y_train, X_test, y_test, X_validation,
+                              y_validation)
 
 
 if __name__ == "__main__":
