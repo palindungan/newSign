@@ -18,6 +18,8 @@ from Util import ImageProcessingModule
 
 
 class TrainingClass():
+    def __init__(self):
+        self.imageProcessing = ImageProcessingModule.ImageProcessing()
 
     def getDatasetArray(self, path, imageDimensions):
         images = []  # contain all images
@@ -119,9 +121,9 @@ class TrainingClass():
         print('shape before = ' + str(X_train[30].shape))  # check before preProcessing
 
         # map = processing each matrix image in a function -> add in list -> convert list to array
-        X_train = np.array(list(map(self.preProcessing, X_train)))
-        X_test = np.array(list(map(self.preProcessing, X_test)))
-        X_validation = np.array(list(map(self.preProcessing, X_validation)))
+        X_train = np.array(list(map(self.imageProcessing.preProcessing, X_train)))
+        X_test = np.array(list(map(self.imageProcessing.preProcessing, X_test)))
+        X_validation = np.array(list(map(self.imageProcessing.preProcessing, X_validation)))
 
         img = X_train[30]
         img = cv2.resize(img, (300, 300))
@@ -138,12 +140,6 @@ class TrainingClass():
         X_validation = X_validation.reshape(X_validation.shape[0], X_validation.shape[1], X_validation.shape[2], 1)
 
         print('after reshape = ' + str(X_train.shape))
-
-    def preProcessing(self, img):
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # convert to GRAY
-        img = cv2.equalizeHist(img)  # function to balance the histogram (contras effect)
-        img = img / 255  # from 0,1,2,3 ... 254,255 to 0,1
-        return img
 
 
 def main():

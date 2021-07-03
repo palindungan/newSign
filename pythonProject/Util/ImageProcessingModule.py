@@ -72,3 +72,9 @@ class ImageProcessing():
                 cv2.putText(imgContour, "Area: " + str(int(area)), (x + w + 20, y + h + 45), cv2.FONT_HERSHEY_SIMPLEX,
                             0.7,
                             (0, 0, 255), 2)
+
+    def preProcessing(self, img):
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # convert to GRAY
+        img = cv2.equalizeHist(img)  # function to balance the histogram (contras effect)
+        img = img / 255  # from 0,1,2,3 ... 254,255 to 0,1
+        return img
