@@ -26,7 +26,7 @@ class TrainingClass():
         myList = os.listdir(path)  # get list content of folder => 0,1,2,3,4,5,6,7,8,9
         noOfClasses = len(myList)  # get number of folder => 10
         print('Total No of Classes Detected = ', noOfClasses)
-        print('Importing Classes ........')
+        print('1 Importing Classes ........')
 
         # for in each folder 0,1,2,3,4,5,6,7,8,9
         for x in range(0, noOfClasses):
@@ -57,6 +57,43 @@ class TrainingClass():
 
         return images, classNo
 
+    def splitDataset(self, images, classNo, testRatio, valRatio):
+        print(' ')
+        print('1 Split Training dan Testing ........')
+        # splitting data training and testing
+        X_train, X_test, y_train, y_test = train_test_split(images, classNo, test_size=testRatio)
+
+        print('Test Ratio = ' + str(testRatio))  # ration
+
+        print('X Train = ' + str(X_train.shape))  # images
+        print('Y Train = ' + str(y_train.shape))  # classes
+
+        print('X Test = ' + str(X_test.shape))  # images
+        print('Y Test = ' + str(y_test.shape))  # classes
+
+        print('2 Split Training dan Validation ........')
+        # splitting data training and validation
+        X_train, X_validation, y_train, y_validation = train_test_split(X_train, y_train, test_size=valRatio)
+
+        print('X Training = ' + str(X_train.shape))  # images
+        print('Y Training = ' + str(y_train.shape))  # classes
+
+        print('X Validation = ' + str(X_validation.shape))  # images
+        print('Y Validation = ' + str(y_validation.shape))  # classes
+
+        print('3 Final Result of Spliting Data : ........')
+
+        print('X Training = ' + str(X_train.shape))  # images
+        print('Y Training = ' + str(y_train.shape))  # classes
+
+        print('X Testing = ' + str(X_test.shape))  # images
+        print('Y Testing = ' + str(y_test.shape))  # classes
+
+        print('X Validation = ' + str(X_validation.shape))  # images
+        print('Y Validation = ' + str(y_validation.shape))  # classes
+
+        return X_train, y_train, X_test, y_test, X_validation, y_validation
+
 
 def main():
     ##########################
@@ -86,6 +123,13 @@ def main():
     # start
     ##########################
     images, classNo = trainingClass.getDatasetArray(path, imageDimensions)
+
+    ##########################
+    # splitting and shuffle the data
+    # start
+    ##########################
+    X_train, y_train, X_test, y_test, X_validation, y_validation = trainingClass.splitDataset(images, classNo,
+                                                                                              testRatio, valRatio)
 
 
 if __name__ == "__main__":
