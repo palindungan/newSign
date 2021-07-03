@@ -89,7 +89,7 @@ while True:
 
         # show Prediction
         if proVal >= threshold:
-            cv2.putText(img, mapper(classIndex) + ', ' + str(proVal), (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+            cv2.putText(img, mapper(classIndex) + ' (' + str(proVal)+')', (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
                         globalColor, 3)
 
     imgRoiCopy = cv2.resize(imgRoiCopy, (wCam, hCam))  # resize img region of interest
