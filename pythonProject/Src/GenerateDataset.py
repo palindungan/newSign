@@ -37,14 +37,11 @@ cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
 myPath = basicTools.getBaseUrl() + '/Resources/dataset/'  # PATH TO SAVE IMAGE
-
-count = 0
-countSave = 0
 # End of Set
 
-# # make folder
-# if saveData:
-#     basicTools.CreateDirectory(myPath)
+# make folder
+if saveData:
+    basicTools.CreateDirectory(myPath)
 
 while True:
     # read image from cam
@@ -66,9 +63,7 @@ while True:
         imgRoi = imgCanvas[abs(bboxAll[1] - 20): abs(bboxAll[3] + 20),
                  abs(bboxAll[0] - 20):abs(bboxAll[2] + 20)]
 
-    cv2.imshow("imgRoi", imgRoi)
-
-    imgRoi = cv2.resize(imgRoi, (wCam, hCam))
+    imgRoi = cv2.resize(imgRoi, (wCam, hCam))  # resize img region of interest
 
     # show result in stacked images
     stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas], [imgRoi, basicTools.CreateBlankImage(img)]))
