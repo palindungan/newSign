@@ -18,6 +18,8 @@ detectionCon = 0.80  # set Confident in AI Mediapipe
 threshold = 0.9
 
 cameraBrightness = 190  # Set Brightness
+
+imageDimensions = (32, 32, 3)
 ##################
 # End of Setting
 
@@ -33,7 +35,7 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
-model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_154/model_trained.h5')
+model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_32_154/model_trained.h5')
 
 while True:
     # read image from cam
@@ -55,10 +57,10 @@ while True:
         imgRoiCopy = imgRoi.copy()
 
         # setting region of interest
-        imgRoi = cv2.resize(imgRoi, (32, 32))
+        imgRoi = cv2.resize(imgRoi, (imageDimensions[0], imageDimensions[1]))
         imgRoi = imageProcessing.preProcessing(imgRoi)
         imgRoiCNN = cv2.resize(imgRoi, (wCam, hCam))
-        imgRoi = imgRoi.reshape(1, 32, 32, 1)
+        imgRoi = imgRoi.reshape(1, imageDimensions[0], imageDimensions[1], 1)
 
         # Predict
         classIndex = int(model.predict_classes(imgRoi))
