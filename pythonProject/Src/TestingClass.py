@@ -13,7 +13,7 @@ from Util import ImageProcessingModule
 wCam, hCam = 480, 360  # width and height image
 noCam = 0  # default Cam
 globalColor = (255, 0, 0)  # default color
-detectionCon = 0.70  # set Confident in AI Mediapipe
+detectionCon = 0.80  # set Confident in AI Mediapipe
 
 threshold = 0.9
 
@@ -33,7 +33,7 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
-model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_20/model_trained.h5')
+model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_154/model_trained.h5')
 
 while True:
     # read image from cam
