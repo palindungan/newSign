@@ -54,3 +54,5 @@ class BasicTools():
                 img)
             self.countSave = self.countSave + 1
         self.count = self.count + 1
+
+        return self.countSave

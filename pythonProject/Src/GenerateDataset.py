@@ -17,8 +17,7 @@ cameraBrightness = 190  # Set Brightness
 moduleVal = 5  # SAVE EVERY 1 FRAME TO AVOID REPETITION
 minBlur = 500  # SMALLER VALUE MEANS MORE BLURRINESS PRESENT
 grayImage = False  # IMAGE SAVED COLORED OR GRAY
-saveData = False  # SAVE DATA FLAG
-showImage = True  # IMAGE DISPLAY FLAG
+saveData = True  # SAVE DATA FLAG
 imgWidth = 180  # Resize width Image
 imgHeight = 120  # Resize height Image
 ##################
@@ -37,6 +36,8 @@ cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
 myPath = basicTools.getBaseUrl() + '/Resources/dataset/'  # PATH TO SAVE IMAGE
+
+countSave = 0
 # End of Set
 
 # create folder for new dataset
@@ -62,13 +63,15 @@ while True:
 
         # save ROI
         if saveData:
-            basicTools.saveImageRoi(imgRoi, moduleVal, minBlur, myPath)
+            imgRoi = cv2.resize(imgRoi, (imgWidth, imgHeight))  # resize img region of interest
+            countSave = basicTools.saveImageRoi(imgRoi, moduleVal, minBlur, myPath)
 
     imgRoi = cv2.resize(imgRoi, (wCam, hCam))  # resize img region of interest
 
-    # show fps
+    # show text
     fps = basicTools.countFps(time=time.time())
-    cv2.putText(img, f'FPS {int(fps)}', (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
+    cv2.putText(img, f'FPS {int(fps)}', (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
+    cv2.putText(img, f'Saved : {int(countSave)}', (170, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
 
     # show result in stacked images
     stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas], [imgRoi, basicTools.CreateBlankImage(img)]))
