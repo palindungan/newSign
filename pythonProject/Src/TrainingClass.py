@@ -55,7 +55,7 @@ class TrainingClass():
         print('shape = ' + str(images.shape))  # (10160, 32, 32, 3)
         print('shape = ' + str(classNo.shape))  # (10160,)
 
-        return images, classNo
+        return images, classNo, noOfClasses
 
     def splitDataset(self, images, classNo, testRatio, valRatio):
         print(' ')
@@ -94,6 +94,57 @@ class TrainingClass():
 
         return X_train, y_train, X_test, y_test, X_validation, y_validation
 
+    def preprocessingImage(self, noOfClasses, X_train, y_train, X_test, y_test, X_validation, y_validation):
+        print(' ')
+        print('1 Preprocessing and Reshaping The Data ........')
+
+        numOfSamples = []
+
+        # return count(index array where class is present)
+        for x in range(0, noOfClasses):
+            number = len(np.where(y_train == x)[0])
+            print('total class of ' + str(x) + ' is ' + str(number))
+            numOfSamples.append(number)
+
+        print(numOfSamples)
+
+        plt.figure(figsize=(10, 5))  # create a figure 10*5 inch
+        # x,y -> x = 0,1,2,3,4,5,6,7,8,9 | y = samples [661, 653, 627, 638, 653, 666, 653, 658, 646, 647]
+        plt.bar(range(0, noOfClasses), numOfSamples)
+        plt.title('No of Images for each Class')
+        plt.xlabel('Class ID')
+        plt.ylabel('Number of Images')
+        plt.show()
+
+        print('shape before = ' + str(X_train[30].shape))  # check before preProcessing
+
+        # map = processing each matrix image in a function -> add in list -> convert list to array
+        X_train = np.array(list(map(self.preProcessing, X_train)))
+        X_test = np.array(list(map(self.preProcessing, X_test)))
+        X_validation = np.array(list(map(self.preProcessing, X_validation)))
+
+        img = X_train[30]
+        img = cv2.resize(img, (300, 300))
+        cv2.imshow('Processed Image Example', img)
+        cv2.waitKey(0)
+
+        print('shape after = ' + str(X_train[30].shape))
+
+        print('before reshape = ' + str(X_train.shape))
+
+        # change chanel from 3 to 1 (for Tensorflow CNN)
+        X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], X_train.shape[2], 1)
+        X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], X_test.shape[2], 1)
+        X_validation = X_validation.reshape(X_validation.shape[0], X_validation.shape[1], X_validation.shape[2], 1)
+
+        print('after reshape = ' + str(X_train.shape))
+
+    def preProcessing(self, img):
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # convert to GRAY
+        img = cv2.equalizeHist(img)  # function to balance the histogram (contras effect)
+        img = img / 255  # from 0,1,2,3 ... 254,255 to 0,1
+        return img
+
 
 def main():
     ##########################
@@ -122,7 +173,7 @@ def main():
     # import dataset 0-9, create one row images array and labels array
     # start
     ##########################
-    images, classNo = trainingClass.getDatasetArray(path, imageDimensions)
+    images, classNo, noOfClasses = trainingClass.getDatasetArray(path, imageDimensions)
 
     ##########################
     # splitting and shuffle the data
@@ -130,6 +181,11 @@ def main():
     ##########################
     X_train, y_train, X_test, y_test, X_validation, y_validation = trainingClass.splitDataset(images, classNo,
                                                                                               testRatio, valRatio)
+    ##########################
+    # preprocessing and reshaping the data
+    # start
+    ##########################
+    trainingClass.preprocessingImage(noOfClasses, X_train, y_train, X_test, y_test, X_validation, y_validation)
 
 
 if __name__ == "__main__":
