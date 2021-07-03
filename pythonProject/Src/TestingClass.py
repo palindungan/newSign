@@ -35,7 +35,7 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
-model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_32_154/model_trained.h5')
+model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_154ep_32x32/model_trained.h5')
 
 while True:
     # read image from cam

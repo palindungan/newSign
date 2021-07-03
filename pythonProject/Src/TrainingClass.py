@@ -248,7 +248,7 @@ def main():
     # Start of SETTING
     testRatio = 0.2
     valRatio = 0.2
-    imageDimensions = (90, 60, 3)
+    imageDimensions = (32, 32, 3)
     # End of SETTING
     ##########################
 
