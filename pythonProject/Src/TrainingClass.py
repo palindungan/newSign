@@ -215,7 +215,7 @@ class TrainingClass():
         print('Test Score = ', str(score[0]))
         print('Test Accuracy = ', str(score[1]))
 
-        model.save(self.basicTools.getBaseUrl() + '/Resources/dataset/')
+        model.save(self.basicTools.getBaseUrl() + '/Resources/model/')
 
     def myModel(self, imageDimensions, noOfClasses):
         noOfFilters = 60
