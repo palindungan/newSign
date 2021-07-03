@@ -1,0 +1,158 @@
+C:\xampp\htdocs\newSign\pythonProject\venv\Scripts\python.exe C:/xampp/htdocs/newSign/pythonProject/Src/TrainingClass.py
+2021-07-04 04:46:28.441314: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cudart64_110.dll
+Total No of Classes Detected =  10
+1 Importing Classes ........
+0 1 2 3 4 5 6 7 8 9  
+Number of Images = 10160
+Number of Classes = 10160
+shape = (10160, 60, 90, 3)
+shape = (10160,)
+ 
+1 Split Training dan Testing ........
+Test Ratio = 0.2
+X Train = (8128, 60, 90, 3)
+Y Train = (8128,)
+X Test = (2032, 60, 90, 3)
+Y Test = (2032,)
+2 Split Training dan Validation ........
+X Training = (6502, 60, 90, 3)
+Y Training = (6502,)
+X Validation = (1626, 60, 90, 3)
+Y Validation = (1626,)
+3 Final Result of Spliting Data : ........
+X Training = (6502, 60, 90, 3)
+Y Training = (6502,)
+X Testing = (2032, 60, 90, 3)
+Y Testing = (2032,)
+X Validation = (1626, 60, 90, 3)
+Y Validation = (1626,)
+ 
+1 Preprocessing and Reshaping The Data ........
+total class of 0 is 668
+total class of 1 is 640
+total class of 2 is 650
+total class of 3 is 665
+total class of 4 is 649
+total class of 5 is 645
+total class of 6 is 638
+total class of 7 is 644
+total class of 8 is 651
+total class of 9 is 652
+[668, 640, 650, 665, 649, 645, 638, 644, 651, 652]
+shape before = (60, 90, 3)
+shape after = (60, 90)
+before reshape = (6502, 60, 90)
+after reshape = (6502, 60, 90, 1)
+ 
+1 Image Augmentation ........
+ 
+1 One Hot Encode (one_hot_encode) ........
+5
+[0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]
+ 
+1 Create the Model and Training ........
+2021-07-04 04:47:47.711437: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library nvcuda.dll
+2021-07-04 04:47:48.061185: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1733] Found device 0 with properties: 
+pciBusID: 0000:01:00.0 name: NVIDIA GeForce MX130 computeCapability: 5.0
+coreClock: 1.189GHz coreCount: 3 deviceMemorySize: 2.00GiB deviceMemoryBandwidth: 37.33GiB/s
+2021-07-04 04:47:48.062171: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cudart64_110.dll
+2021-07-04 04:47:48.077100: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cublas64_11.dll
+2021-07-04 04:47:48.077405: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cublasLt64_11.dll
+2021-07-04 04:47:48.123571: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cufft64_10.dll
+2021-07-04 04:47:48.125588: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library curand64_10.dll
+2021-07-04 04:47:48.160790: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cusolver64_11.dll
+2021-07-04 04:47:48.191686: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cusparse64_11.dll
+2021-07-04 04:47:48.192954: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cudnn64_8.dll
+2021-07-04 04:47:48.193763: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1871] Adding visible gpu devices: 0
+2021-07-04 04:47:48.196172: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-07-04 04:47:48.197939: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1733] Found device 0 with properties: 
+pciBusID: 0000:01:00.0 name: NVIDIA GeForce MX130 computeCapability: 5.0
+coreClock: 1.189GHz coreCount: 3 deviceMemorySize: 2.00GiB deviceMemoryBandwidth: 37.33GiB/s
+2021-07-04 04:47:48.198678: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1871] Adding visible gpu devices: 0
+2021-07-04 04:47:49.686971: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1258] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-07-04 04:47:49.687278: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1264]      0 
+2021-07-04 04:47:49.687458: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1277] 0:   N 
+2021-07-04 04:47:49.690164: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1418] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 1359 MB memory) -> physical GPU (device: 0, name: NVIDIA GeForce MX130, pci bus id: 0000:01:00.0, compute capability: 5.0)
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d (Conv2D)              (None, 86, 56, 60)        1560      
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 82, 52, 60)        90060     
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 41, 26, 60)        0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 39, 24, 30)        16230     
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 37, 22, 30)        8130      
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 18, 11, 30)        0         
+_________________________________________________________________
+dropout (Dropout)            (None, 18, 11, 30)        0         
+_________________________________________________________________
+flatten (Flatten)            (None, 5940)              0         
+_________________________________________________________________
+dense (Dense)                (None, 500)               2970500   
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 500)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 10)                5010      
+=================================================================
+Total params: 3,091,490
+Trainable params: 3,091,490
+Non-trainable params: 0
+_________________________________________________________________
+None
+2021-07-04 04:47:50.073817: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:176] None of the MLIR Optimization Passes are enabled (registered 2)
+Epoch 1/20
+2021-07-04 04:48:03.393207: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cudnn64_8.dll
+2021-07-04 04:48:04.499389: I tensorflow/stream_executor/cuda/cuda_dnn.cc:359] Loaded cuDNN version 8200
+2021-07-04 04:48:06.459091: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cublas64_11.dll
+2021-07-04 04:48:07.760137: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cublasLt64_11.dll
+2021-07-04 04:48:08.061790: W tensorflow/core/common_runtime/bfc_allocator.cc:271] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.21GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+130/130 [==============================] - ETA: 0s - loss: 0.9074 - accuracy: 0.6847WARNING:tensorflow:Model was constructed with shape (None, 90, 60, 1) for input KerasTensor(type_spec=TensorSpec(shape=(None, 90, 60, 1), dtype=tf.float32, name='conv2d_input'), name='conv2d_input', description="created by layer 'conv2d_input'"), but it was called on an input with incompatible shape (None, 60, 90, 1).
+130/130 [==============================] - 51s 231ms/step - loss: 0.9040 - accuracy: 0.6860 - val_loss: 0.0029 - val_accuracy: 1.0000
+Epoch 2/20
+130/130 [==============================] - 26s 203ms/step - loss: 0.1161 - accuracy: 0.9600 - val_loss: 8.8373e-04 - val_accuracy: 1.0000
+Epoch 3/20
+130/130 [==============================] - 26s 200ms/step - loss: 0.0561 - accuracy: 0.9839 - val_loss: 2.6921e-04 - val_accuracy: 1.0000
+Epoch 4/20
+130/130 [==============================] - 26s 200ms/step - loss: 0.0496 - accuracy: 0.9849 - val_loss: 2.1559e-04 - val_accuracy: 1.0000
+Epoch 5/20
+130/130 [==============================] - 26s 201ms/step - loss: 0.0475 - accuracy: 0.9863 - val_loss: 4.9425e-04 - val_accuracy: 1.0000
+Epoch 6/20
+130/130 [==============================] - 26s 201ms/step - loss: 0.0402 - accuracy: 0.9887 - val_loss: 2.5689e-04 - val_accuracy: 1.0000
+Epoch 7/20
+130/130 [==============================] - 26s 201ms/step - loss: 0.0289 - accuracy: 0.9894 - val_loss: 1.1225e-04 - val_accuracy: 1.0000
+Epoch 8/20
+130/130 [==============================] - 26s 202ms/step - loss: 0.0423 - accuracy: 0.9880 - val_loss: 2.6706e-05 - val_accuracy: 1.0000
+Epoch 9/20
+130/130 [==============================] - 26s 202ms/step - loss: 0.0222 - accuracy: 0.9942 - val_loss: 1.3206e-04 - val_accuracy: 1.0000
+Epoch 10/20
+130/130 [==============================] - 26s 201ms/step - loss: 0.0214 - accuracy: 0.9929 - val_loss: 1.4606e-05 - val_accuracy: 1.0000
+Epoch 11/20
+130/130 [==============================] - 26s 202ms/step - loss: 0.0181 - accuracy: 0.9956 - val_loss: 2.6490e-04 - val_accuracy: 1.0000
+Epoch 12/20
+130/130 [==============================] - 26s 201ms/step - loss: 0.0192 - accuracy: 0.9934 - val_loss: 2.2309e-05 - val_accuracy: 1.0000
+Epoch 13/20
+130/130 [==============================] - 26s 202ms/step - loss: 0.0120 - accuracy: 0.9964 - val_loss: 6.0413e-04 - val_accuracy: 1.0000
+Epoch 14/20
+130/130 [==============================] - 26s 202ms/step - loss: 0.0112 - accuracy: 0.9954 - val_loss: 7.1278e-06 - val_accuracy: 1.0000
+Epoch 15/20
+130/130 [==============================] - 26s 202ms/step - loss: 0.0161 - accuracy: 0.9965 - val_loss: 2.1178e-05 - val_accuracy: 1.0000
+Epoch 16/20
+130/130 [==============================] - 26s 201ms/step - loss: 0.0152 - accuracy: 0.9967 - val_loss: 1.8183e-06 - val_accuracy: 1.0000
+Epoch 17/20
+130/130 [==============================] - 26s 202ms/step - loss: 0.0144 - accuracy: 0.9952 - val_loss: 6.7026e-07 - val_accuracy: 1.0000
+Epoch 18/20
+130/130 [==============================] - 26s 202ms/step - loss: 0.0199 - accuracy: 0.9929 - val_loss: 2.6453e-05 - val_accuracy: 1.0000
+Epoch 19/20
+130/130 [==============================] - 26s 202ms/step - loss: 0.0139 - accuracy: 0.9959 - val_loss: 1.7987e-06 - val_accuracy: 1.0000
+Epoch 20/20
+130/130 [==============================] - 26s 201ms/step - loss: 0.0057 - accuracy: 0.9979 - val_loss: 4.7728e-07 - val_accuracy: 1.0000
+Test Score =  0.0007881479104980826
+Test Accuracy =  0.9995078444480896
+
+Process finished with exit code 0
