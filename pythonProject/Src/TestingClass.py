@@ -37,6 +37,25 @@ cap.set(10, cameraBrightness)
 
 model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_154ep_32x32/model_trained.h5')
 
+# reverse dari variable CLASS_MAP
+REV_CLASS_MAP = {
+    0: 'A',
+    1: 'B',
+    2: 'C',
+    3: 'D',
+    4: 'E',
+    5: 'F',
+    6: 'G',
+    7: 'H',
+    8: 'I',
+    9: 'J',
+}
+
+# fungsi untuk mengambil reverse CLASS_MAP
+def mapper(key):
+    return REV_CLASS_MAP[key]
+
+
 while True:
     # read image from cam
     success, img = cap.read()
@@ -70,7 +89,7 @@ while True:
 
         # show Prediction
         if proVal >= threshold:
-            cv2.putText(img, str(classIndex) + ', ' + str(proVal), (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+            cv2.putText(img, mapper(classIndex) + ', ' + str(proVal), (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
                         globalColor, 3)
 
     imgRoiCopy = cv2.resize(imgRoiCopy, (wCam, hCam))  # resize img region of interest
