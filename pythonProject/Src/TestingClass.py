@@ -15,7 +15,7 @@ noCam = 0  # default Cam
 globalColor = (255, 0, 0)  # default color
 detectionCon = 0.70  # set Confident in AI Mediapipe
 
-threshold = 0.70
+threshold = 0.9
 
 cameraBrightness = 190  # Set Brightness
 ##################
@@ -33,7 +33,7 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
-model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model/model_trained.h5')
+model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_20/model_trained.h5')
 
 while True:
     # read image from cam
@@ -46,6 +46,8 @@ while True:
 
     # Get ROI
     imgRoi = basicTools.CreateBlankImage(img)
+    imgRoiCopy = basicTools.CreateBlankImage(img)
+    imgRoiCNN = basicTools.CreateBlankImage(img)
     if len(bboxAll) > 0:
         # crop image in matrix y,x
         imgRoi = imgCanvas[abs(bboxAll[1] - 20): abs(bboxAll[3] + 20),
@@ -55,6 +57,7 @@ while True:
         # setting region of interest
         imgRoi = cv2.resize(imgRoi, (32, 32))
         imgRoi = imageProcessing.preProcessing(imgRoi)
+        imgRoiCNN = cv2.resize(imgRoi, (wCam, hCam))
         imgRoi = imgRoi.reshape(1, 32, 32, 1)
 
         # Predict
@@ -65,8 +68,8 @@ while True:
 
         # show Prediction
         if proVal >= threshold:
-            cv2.putText(img, str(classIndex) + ', ' + str(proVal), (20, 200), cv2.FONT_HERSHEY_COMPLEX, 1,
-                        globalColor, 1)
+            cv2.putText(img, str(classIndex) + ', ' + str(proVal), (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                        globalColor, 3)
 
     imgRoiCopy = cv2.resize(imgRoiCopy, (wCam, hCam))  # resize img region of interest
 
@@ -75,8 +78,10 @@ while True:
     cv2.putText(img, f'FPS {int(fps)}', (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, globalColor, 3)
 
     # show result in stacked images
-    stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas], [imgRoiCopy, imgRoi]))
+    stackedImages = imageProcessing.stackImages(1, ([img, imgCanvas], [imgRoiCopy, imgRoiCopy]))
     cv2.imshow("Stacked Image", stackedImages)
+
+    cv2.imshow('imgRoiCNN', imgRoiCNN)
 
     if cv2.waitKey(1) & 0xff == ord('q'):
         break
