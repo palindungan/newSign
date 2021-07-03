@@ -65,9 +65,11 @@ while True:
     cv2.imshow("Stacked Image", stackedImages)
 
     if len(bboxAll) > 0:
-        cv2.rectangle(imgCopy, (bboxAll[0] - 20, bboxAll[1] - 20), (bboxAll[2] + 20, bboxAll[3] + 20), (0, 255, 0),
-                      2)
-    cv2.imshow("imgCopy", imgCopy)
+        # crop image in matrix y,x
+        imgCanvas = imgCanvas[abs(bboxAll[1] - 20): abs(bboxAll[3] + 20),
+                    abs(bboxAll[0] - 20):abs(bboxAll[2] + 20)]
+
+    cv2.imshow("imgCopy", imgCanvas)
 
     if cv2.waitKey(1) & 0xff == ord('q'):
         break

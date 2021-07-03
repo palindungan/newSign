@@ -32,4 +32,4 @@ class BasicTools():
     def CreateBlankImage(self, img):
         width = img.shape[1]
         height = img.shape[0]
-        return np.zeros((width, height, 3), np.uint8)
+        return np.zeros((height, width, 3), np.uint8)
