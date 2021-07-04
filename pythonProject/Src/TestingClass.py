@@ -37,7 +37,7 @@ cap.set(10, cameraBrightness)
 
 model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_154ep_32x32/model_trained.h5')
 
-# reverse dari variable CLASS_MAP
+# reverse CLASS_MAP
 REV_CLASS_MAP = {
     0: 'A',
     1: 'B',
@@ -51,7 +51,7 @@ REV_CLASS_MAP = {
     9: 'J',
 }
 
-# fungsi untuk mengambil reverse CLASS_MAP
+# function to get CLASS_MAP
 def mapper(key):
     return REV_CLASS_MAP[key]
 
