@@ -181,8 +181,8 @@ class TrainingClass():
         print('1 Create the Model and Training ........')
 
         batchSizeVal = 50
-        epochsVal = 20
         stepsPerEpochVal = len(X_train) // batchSizeVal
+        epochsVal = ((len(X_train) + len(X_test) + len(X_validation)) // stepsPerEpochVal) * 2
 
         model = self.myModel(imageDimensions, noOfClasses)
         print(model.summary())
@@ -215,7 +215,7 @@ class TrainingClass():
         print('Test Score = ', str(score[0]))
         print('Test Accuracy = ', str(score[1]))
 
-        model.save(self.basicTools.getBaseUrl() + '/Resources/model/model_trained.h5')
+        model.save(self.basicTools.getBaseUrl() + '/Resources/model/model_trained_alphabet.h5')
 
     def myModel(self, imageDimensions, noOfClasses):
         noOfFilters = 60
@@ -258,7 +258,7 @@ def main():
     # End of Declare Object Class
 
     # Start of Set
-    path = basicTools.getBaseUrl() + '/Resources/dataset/'  # PATH IMAGE
+    path = basicTools.getBaseUrl() + '/Resources/dataset/alphabet/'  # PATH IMAGE
     # End of Set
 
     ##########################
