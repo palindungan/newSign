@@ -24,7 +24,7 @@ imgHeight = 120  # Resize height Image
 # Start of Declare Object Class
 basicTools = BasicToolModule.BasicTools()
 imageProcessing = ImageProcessingModule.ImageProcessing()
-detector = HandTrackingModule.HandDetector(detectionCon=detectionCon, maxHands=2)
+detector = HandTrackingModule.HandDetector(detectionCon=detectionCon, maxHands=1)
 # End of Declare Object Class
 
 # Start of Set

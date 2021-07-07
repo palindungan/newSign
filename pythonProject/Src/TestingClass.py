@@ -35,7 +35,7 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
-model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model_154ep_32x32/model_trained.h5')
+model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model/model_trained_alphabet.h5')
 
 # reverse CLASS_MAP
 REV_CLASS_MAP = {
@@ -49,7 +49,24 @@ REV_CLASS_MAP = {
     7: 'H',
     8: 'I',
     9: 'J',
+    10: 'K',
+    11: 'L',
+    12: 'M',
+    13: 'N',
+    14: 'O',
+    15: 'P',
+    16: 'Q',
+    17: 'R',
+    18: 'S',
+    19: 'T',
+    20: 'U',
+    21: 'V',
+    22: 'W',
+    23: 'X',
+    24: 'Y',
+    25: 'Z',
 }
+
 
 # function to get CLASS_MAP
 def mapper(key):
@@ -89,7 +106,7 @@ while True:
 
         # show Prediction
         if proVal >= threshold:
-            cv2.putText(img, mapper(classIndex) + ' (' + str(proVal)+')', (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+            cv2.putText(img, mapper(classIndex) + ' (' + str(proVal) + ')', (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
                         globalColor, 3)
 
     imgRoiCopy = cv2.resize(imgRoiCopy, (wCam, hCam))  # resize img region of interest
