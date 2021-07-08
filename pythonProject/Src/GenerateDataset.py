@@ -24,7 +24,7 @@ imgHeight = 120  # Resize height Image
 # Start of Declare Object Class
 basicTools = BasicToolModule.BasicTools()
 imageProcessing = ImageProcessingModule.ImageProcessing()
-detector = HandTrackingModule.HandDetector(detectionCon=detectionCon, maxHands=1)
+detector = HandTrackingModule.HandDetector(detectionCon=detectionCon, maxHands=2)
 # End of Declare Object Class
 
 # Start of Set
@@ -33,7 +33,7 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
-myPath = basicTools.getBaseUrl() + '/Resources/dataset/'  # PATH TO SAVE IMAGE
+myPath = basicTools.getBaseUrl() + '/Resources/dataset/numeric/'  # PATH TO SAVE IMAGE
 
 countSave = 0
 # End of Set
