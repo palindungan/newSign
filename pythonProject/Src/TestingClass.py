@@ -7,6 +7,7 @@ from tensorflow import keras
 from Util import HandTrackingModule
 from Util import BasicToolModule
 from Util import ImageProcessingModule
+from Util import TranslationModule
 
 # Start of Setting
 ##################
@@ -27,6 +28,7 @@ imageDimensions = (32, 32, 3)
 basicTools = BasicToolModule.BasicTools()
 imageProcessing = ImageProcessingModule.ImageProcessing()
 detector = HandTrackingModule.HandDetector(detectionCon=detectionCon, maxHands=2)
+translation = TranslationModule.Translation()
 # End of Declare Object Class
 
 # Start of Set
@@ -36,26 +38,6 @@ cap.set(4, hCam)
 cap.set(10, cameraBrightness)
 
 model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model/model_trained_numeric.h5')
-
-# reverse CLASS_MAP
-REV_CLASS_MAP = {
-    0: '1',
-    1: '2',
-    2: '3',
-    3: '4',
-    4: '5',
-    5: '6',
-    6: '7',
-    7: '8',
-    8: '9',
-    9: '10',
-}
-
-
-# function to get CLASS_MAP
-def mapper(key):
-    return REV_CLASS_MAP[key]
-
 
 while True:
     # read image from cam
@@ -90,7 +72,7 @@ while True:
 
         # show Prediction
         if proVal >= threshold:
-            cv2.putText(img, mapper(classIndex) + ' (' + str(proVal) + ')', (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+            cv2.putText(img, translation.mapper(classIndex) + ' (' + str(proVal) + ')', (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
                         globalColor, 3)
 
     imgRoiCopy = cv2.resize(imgRoiCopy, (wCam, hCam))  # resize img region of interest
