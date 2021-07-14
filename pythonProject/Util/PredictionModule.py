@@ -11,16 +11,31 @@ class Prediction():
         self.basicTools = BasicToolModule.BasicTools()
         self.translation = TranslationModule.Translation()
 
-        self.model = keras.models.load_model(self.basicTools.getBaseUrl() + '/Resources/model/model_trained_numeric.h5')
+        self.model_numeric = keras.models.load_model(
+            self.basicTools.getBaseUrl() + '/Resources/model/model_trained_numeric.h5')
+        self.model_alphabet = keras.models.load_model(
+            self.basicTools.getBaseUrl() + '/Resources/model/model_trained_alphabet.h5')
 
-    def predict(self, imgRoi, threshold):
-        # Predict
-        classIndex = int(self.model.predict_classes(imgRoi))
-        predictions = self.model.predict(imgRoi)
-        proVal = np.amax(predictions)
+    def predict(self, imgRoi):
+        # Predict NUMERIC
+        numeric_classIndex = int(self.model_numeric.predict_classes(imgRoi))
+        numeric_predictions = self.model_numeric.predict(imgRoi)
+        numeric_proVal = np.amax(numeric_predictions)
 
-        predictionType = 'NUMERIC'
+        # Predict ALPHABET
+        alphabet_classIndex = int(self.model_alphabet.predict_classes(imgRoi))
+        alphabet_predictions = self.model_alphabet.predict(imgRoi)
+        alphabet_proVal = np.amax(alphabet_predictions)
 
-        # show Prediction
-        if proVal >= threshold:
-            return classIndex, predictions, proVal, predictionType
+        if numeric_proVal > alphabet_proVal:
+            classIndex = numeric_classIndex
+            predictions = numeric_predictions
+            proVal = numeric_proVal
+            predictionType = 'NUMERIC'
+        else:
+            classIndex = alphabet_classIndex
+            predictions = alphabet_predictions
+            proVal = alphabet_proVal
+            predictionType = 'ALPHABET'
+
+        return classIndex, predictions, proVal, predictionType

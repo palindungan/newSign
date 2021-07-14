@@ -1,13 +1,11 @@
 import cv2
 import time
-import numpy as np
-
-from tensorflow import keras
 
 from Util import HandTrackingModule
 from Util import BasicToolModule
 from Util import ImageProcessingModule
 from Util import TranslationModule
+from Util import PredictionModule
 
 # Start of Setting
 ##################
@@ -29,6 +27,7 @@ basicTools = BasicToolModule.BasicTools()
 imageProcessing = ImageProcessingModule.ImageProcessing()
 detector = HandTrackingModule.HandDetector(detectionCon=detectionCon, maxHands=2)
 translation = TranslationModule.Translation()
+prediction = PredictionModule.Prediction()
 # End of Declare Object Class
 
 # Start of Set
@@ -36,8 +35,6 @@ cap = cv2.VideoCapture(noCam)
 cap.set(3, wCam)
 cap.set(4, hCam)
 cap.set(10, cameraBrightness)
-
-model = keras.models.load_model(basicTools.getBaseUrl() + '/Resources/model/model_trained_numeric.h5')
 
 while True:
     # read image from cam
@@ -65,13 +62,11 @@ while True:
         imgRoi = imgRoi.reshape(1, imageDimensions[0], imageDimensions[1], 1)
 
         # Predict
-        classIndex = int(model.predict_classes(imgRoi))
-        predictions = model.predict(imgRoi)
-        proVal = np.amax(predictions)
+        classIndex, predictions, proVal, predictionType = prediction.predict(imgRoi)
 
         # show Prediction
         if proVal >= threshold:
-            cv2.putText(img, translation.mapper(classIndex, 'NUMERIC') + ' (' + str(proVal) + ')', (200, 40),
+            cv2.putText(img, translation.mapper(classIndex, predictionType) + ' (' + str(proVal) + ')', (200, 40),
                         cv2.FONT_HERSHEY_SIMPLEX, 1,
                         globalColor, 3)
 
