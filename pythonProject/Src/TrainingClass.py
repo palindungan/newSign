@@ -215,7 +215,7 @@ class TrainingClass():
         print('Test Score = ', str(score[0]))
         print('Test Accuracy = ', str(score[1]))
 
-        model.save(self.basicTools.getBaseUrl() + '/Resources/model/model_trained_numeric.h5')
+        model.save(self.basicTools.getBaseUrl() + '/Resources/model/model_trained_all.h5')
 
     def myModel(self, imageDimensions, noOfClasses):
         noOfFilters = 60
@@ -258,7 +258,7 @@ def main():
     # End of Declare Object Class
 
     # Start of Set
-    path = basicTools.getBaseUrl() + '/Resources/dataset/numeric/'  # PATH IMAGE
+    path = basicTools.getBaseUrl() + '/Resources/dataset/all/'  # PATH IMAGE
     # End of Set
 
     ##########################

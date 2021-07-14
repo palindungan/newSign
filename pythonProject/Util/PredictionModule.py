@@ -15,6 +15,8 @@ class Prediction():
             self.basicTools.getBaseUrl() + '/Resources/model/model_trained_numeric.h5')
         self.model_alphabet = keras.models.load_model(
             self.basicTools.getBaseUrl() + '/Resources/model/model_trained_alphabet.h5')
+        self.model_all = keras.models.load_model(
+            self.basicTools.getBaseUrl() + '/Resources/model/model_trained_all.h5')
 
     def predict(self, imgRoi):
         # Predict NUMERIC
@@ -37,5 +39,18 @@ class Prediction():
             predictions = alphabet_predictions
             proVal = alphabet_proVal
             predictionType = 'ALPHABET'
+
+        return classIndex, predictions, proVal, predictionType
+
+    def predictAll(self, imgRoi):
+        # Predict ALL
+        all_classIndex = int(self.model_all.predict_classes(imgRoi))
+        all_predictions = self.model_all.predict(imgRoi)
+        all_proVal = np.amax(all_predictions)
+
+        classIndex = all_classIndex
+        predictions = all_predictions
+        proVal = all_proVal
+        predictionType = 'ALL'
 
         return classIndex, predictions, proVal, predictionType

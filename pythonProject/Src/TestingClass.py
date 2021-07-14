@@ -62,7 +62,7 @@ while True:
         imgRoi = imgRoi.reshape(1, imageDimensions[0], imageDimensions[1], 1)
 
         # Predict
-        classIndex, predictions, proVal, predictionType = prediction.predict(imgRoi)
+        classIndex, predictions, proVal, predictionType = prediction.predictAll(imgRoi)
 
         # show Prediction
         if proVal >= threshold:
