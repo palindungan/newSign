@@ -68,11 +68,11 @@ while True:
         classIndex = int(model.predict_classes(imgRoi))
         predictions = model.predict(imgRoi)
         proVal = np.amax(predictions)
-        print(classIndex, proVal)
 
         # show Prediction
         if proVal >= threshold:
-            cv2.putText(img, translation.mapper(classIndex) + ' (' + str(proVal) + ')', (200, 40), cv2.FONT_HERSHEY_SIMPLEX, 1,
+            cv2.putText(img, translation.mapper(classIndex, 'NUMERIC') + ' (' + str(proVal) + ')', (200, 40),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1,
                         globalColor, 3)
 
     imgRoiCopy = cv2.resize(imgRoiCopy, (wCam, hCam))  # resize img region of interest
