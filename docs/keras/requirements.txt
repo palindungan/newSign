@@ -13,4 +13,4 @@ macOS 10.12.6 (Sierra) or later.
 
 https://keras.io/about/#installation-amp-compatibility
 
-used : 2.4.3
+used : Keras2.4.3
