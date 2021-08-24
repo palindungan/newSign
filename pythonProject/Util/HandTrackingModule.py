@@ -68,6 +68,8 @@ class HandDetector():
                 # detect index ,position (ratio) landmark  in image
                 for idxLandmark, lm in enumerate(handLms.landmark):
 
+                    # print('landmark ke-' + str(idxLandmark) + ' x : ' + str(lm.x) + ', y : ' + str(lm.y) + ', z : ' + str(lm.z))
+
                     h, w, c = img.shape  # get image shape
                     cx, cy = int(lm.x * w), int(lm.y * h)  # get coordinate
 
