@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+import datetime
+import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.image import ImageDataGenerator
@@ -187,12 +189,16 @@ class TrainingClass():
         model = self.myModel(imageDimensions, noOfClasses)
         print(model.summary())
 
+        log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+
         history = model.fit(
             dataGen.flow(X_train, y_train, batch_size=batchSizeVal),
             steps_per_epoch=stepsPerEpochVal,
             epochs=epochsVal,
             validation_data=(X_validation, y_validation),
-            shuffle=1
+            shuffle=1,
+            callbacks=[tensorboard_callback]
         )
 
         plt.figure(1)
