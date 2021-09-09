@@ -190,7 +190,7 @@ class TrainingClass():
         print(model.summary())
 
         log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, profile_batch='15, 45', histogram_freq=1)
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, profile_batch='15, 35', histogram_freq=1)
 
         history = model.fit(
             dataGen.flow(X_train, y_train, batch_size=batchSizeVal),
